@@ -11,38 +11,35 @@ public class SimpleRandomWalkMapGenerator : AbstractDungeonGenerator
     //  protected Vector2Int startPosition = Vector2Int.zero;
 
     [SerializeField]
-    private SimpleRandomWalkSO randomWalkParameters;
+    protected SimpleRandomWalkSO randomWalkParameters;
 
     [SerializeField]
     private TileMapVisualizer tilemapVizualizer;
 
-    public void Awake()
-    {
-        RunProceduralGeneration();
-    }
+
 
     protected override void RunProceduralGeneration()
     {
-        HashSet<Vector2Int> floorPositions = RunRandomWalk();
+        HashSet<Vector2Int> floorPositions = RunRandomWalk(randomWalkParameters, startPosition);
       //  Debug.Log("count "+floorPositions.Count); ;
         tilemapVizualizer.Clear();
-        tilemapVizualizer.PaintFloorTiles(floorPositions);
+        tilemapVizualizer.PaintFloorandPerspectiveWallTiles(floorPositions);
         WallGenerator.CreateWalls(floorPositions, tileMapVisualizer);
     }
 
-    protected HashSet<Vector2Int> RunRandomWalk()
+    protected HashSet<Vector2Int> RunRandomWalk(SimpleRandomWalkSO parameters, Vector2Int position)
     {
-        var currentPosition = startPosition;
+        var currentPosition = position;
         HashSet<Vector2Int> floorPosition = new HashSet<Vector2Int>();
-        for (int i = 0; i < randomWalkParameters.iterations; i++)
+        for (int i = 0; i < parameters.iterations; i++)
         {
-            var path = ProceduralGenerationAlgorithms.SimpleRandomWalk(currentPosition, randomWalkParameters.walkLength);
+            var path = ProceduralGenerationAlgorithms.SimpleRandomWalk(currentPosition, parameters.walkLength);
          /*   foreach(var p in path)
             {
                 Debug.Log(p);
             }*/
             floorPosition.UnionWith(path);
-            if(randomWalkParameters.startRandomlyEachIteration)
+            if(parameters.startRandomlyEachIteration)
             {
                 currentPosition = floorPosition.ElementAt(Random.Range(0, floorPosition.Count));
             }
