@@ -42,19 +42,26 @@ public class ProceduralGenerationRoomGenerator : AbstractDungeonGenerator
         HashSet<Vector2Int> floor = new HashSet<Vector2Int>();
         floor = CreateEachRoom(rooms);
         var centersOfRooms = GetCentersOfRooms(rooms);
-        Debug.Log(centersOfRooms.Count);
         floor.UnionWith(RoomConnectAlgorithm.ConnectRooms(centersOfRooms));
         tileMapVisualizer.PaintFloorandPerspectiveWallTiles(floor);
 
         List<ColorEnemy> roomColors = new List<ColorEnemy>();
         GenerateRandomColorForRooms(rooms, floor, roomColors);
-        PlaceSpawners(roomColors, rooms);
 
         var startAndEnd = DungeonContentGeneratorAlgorithms.GetTwoRoomsFurthestFromEachOther(centersOfRooms, floor);
 
-       dungeonContentGenerator.PlaceStartAndEnd(startAndEnd.Item1, startAndEnd.Item2, tileMapVisualizer);
+
 
         WallGenerator.CreateWalls(floor, tileMapVisualizer);
+
+        tileMapVisualizer.SetTileMapZToZero();
+
+        dungeonContentGenerator.BakeNavMesh(tileMapVisualizer.GetWallBounds());
+
+        PlaceSpawners(roomColors, rooms);
+
+
+        dungeonContentGenerator.PlaceStartAndEnd(startAndEnd.Item1, startAndEnd.Item2, tileMapVisualizer);
     }
 
 

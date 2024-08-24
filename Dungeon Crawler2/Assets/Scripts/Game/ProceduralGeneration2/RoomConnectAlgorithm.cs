@@ -49,18 +49,15 @@ public static class RoomConnectAlgorithm
 
             for (int x = point1.x; x != point2.x; x += direction)
             {
+                corridor.Add(new Vector2Int(x, point2.y - 1));
                 corridor.Add(new Vector2Int(x, point2.y));
                 corridor.Add(new Vector2Int(x, point2.y + 1));
             }
-            if (direction == 1)
-            {
-                corridor.Add(new Vector2Int(point2.x + 1, point1.y));
-            }
-            //int lastDirection = direction;
             direction = 1;
             if (point1.y > point2.y) direction = -1;
             for (int y = point1.y; y != point2.y; y += direction)
             {
+                corridor.Add(new Vector2Int(point1.x - 1, y));
                 corridor.Add(new Vector2Int(point1.x, y));
                 corridor.Add(new Vector2Int(point1.x + 1, y));
             }
@@ -71,19 +68,35 @@ public static class RoomConnectAlgorithm
 
             for (int y = point1.y; y != point2.y; y += direction)
             {
+                corridor.Add(new Vector2Int(point1.x - 1, y));
                 corridor.Add(new Vector2Int(point1.x, y));
                 corridor.Add(new Vector2Int(point1.x+1, y));
             }
+                corridor.UnionWith(GetBiggerCorner(new Vector2Int(point1.x, point2.y)));
             direction = 1;
             if (point1.x > point2.x) direction = -1;
 
             for (int x = point1.x; x != point2.x; x += direction)
             {
+                corridor.Add(new Vector2Int(x, point2.y - 1));
                 corridor.Add(new Vector2Int(x, point2.y));
                 corridor.Add(new Vector2Int(x, point2.y+1));
             }
         }
         return corridor;
+    }
+    private static HashSet<Vector2Int> GetBiggerCorner(Vector2Int position)
+    {
+        HashSet<Vector2Int> corner = new HashSet<Vector2Int>();
+        foreach (var dir in RandomDirectionGenerator.diagonalDirections)
+        {
+            corner.Add(new Vector2Int(position.x + dir.x, position.y + dir.y));
+        }
+        foreach (var dir in RandomDirectionGenerator.directions)
+        {
+            corner.Add(new Vector2Int(position.x + dir.x, position.y + dir.y));
+        }
+        return corner;
     }
     /// <summary>
     /// Finds closest room to the selected one from the unconnected

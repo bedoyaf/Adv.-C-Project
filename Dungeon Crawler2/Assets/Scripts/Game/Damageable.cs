@@ -26,3 +26,7 @@ public class Damageable : MonoBehaviour
         }
     }
 }
+public interface IDamageable
+{
+    void TakeDamage(int damage);
+}
