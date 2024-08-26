@@ -37,28 +37,6 @@ public class TileMapVisualizer : MonoBehaviour
     [Range(0f, 1f)]
     private float chanceOfColorWalls = 0.2f;
 
-
-
-    public void SetTileMapZToZero()
-    {
-        // Get the current position of the floorTilemap
-        Vector3 currentPosition = floorTilemap.transform.position;
-
-        // Create a new position with the z value set to 0
-        Vector3 newPosition = new Vector3(currentPosition.x, currentPosition.y, 0f);
-
-        // Set the new position to the floorTilemap
-        floorTilemap.transform.position = newPosition;
-        // Get the current position of the floorTilemap
-        currentPosition = wallTilemap.transform.position;
-
-        // Create a new position with the z value set to 0
-        newPosition = new Vector3(currentPosition.x, currentPosition.y, 0f);
-
-        // Set the new position to the floorTilemap
-        wallTilemap.transform.position = newPosition;
-    }
-
     public Bounds GetWallBounds()
     {
         Vector3 min = wallTilemap.GetCellCenterWorld(wallTilemap.cellBounds.position);

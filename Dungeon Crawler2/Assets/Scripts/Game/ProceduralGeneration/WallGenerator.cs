@@ -37,6 +37,14 @@ public class WallGenerator : MonoBehaviour
         }
         return wallPositions;
     }
+    /// <summary>
+    /// Just goes through the floor and check if theres a missing wall on a diagonal axis by counting neighbours of each position, due to the fact, that a tile has either one wall neighbour or 2
+    /// 2 means it is a corner tile so there is a diagonal missing
+    /// </summary>
+    /// /// <param name="floorPositions">All the floor positions</param>
+    /// <param name="directions"> Just basic cardinal directions </param>
+    /// <param name="wallPositions"> All the wall positions</param>
+    /// <returns>A set of positions where diagonal walls need to be patched.</returns>
     private static HashSet<Vector2Int> patchCorners(HashSet<Vector2Int> floorPositions, List<Vector2Int> directions, HashSet<Vector2Int> wallPositions)
     {
         HashSet<Vector2Int> corners = new HashSet<Vector2Int>();

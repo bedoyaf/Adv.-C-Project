@@ -17,7 +17,7 @@ public class DungeonContentGenerator : MonoBehaviour
     [SerializeField]
     private GameObject spawner;
 
-    GameObject parentSpawner;
+    [SerializeField] private GameObject parentSpawner;
 
     [SerializeField]
     private GameObject start, end;
@@ -28,17 +28,29 @@ public class DungeonContentGenerator : MonoBehaviour
     [SerializeField]
     private AstarPath pathfinding;
     [SerializeField]
-    private Transform EnemySpawnPointsParent, EnemyParent;
+    private GameObject EnemySpawnPointsParent, EnemyParent;
     [SerializeField] private GameObject statsCounter;
 
     public void DestroySpawners()
     {
-        if (parentSpawner != null)
+        foreach (Transform child in parentSpawner.transform)
         {
-            foreach (Transform child in parentSpawner.transform)
+            Destroy(child.gameObject);
+        }
+    }
+
+    public void DestroyEnemies()
+    {
+        foreach (Transform child in EnemyParent.transform)
+        {
+            if (child.CompareTag("Enemy"))
             {
-                GameObject.DestroyImmediate(child.gameObject);
+                Destroy(child.gameObject);
             }
+        }
+        foreach (Transform child in EnemySpawnPointsParent.transform)
+        {
+            Destroy(child.gameObject);
         }
     }
 
@@ -56,25 +68,7 @@ public class DungeonContentGenerator : MonoBehaviour
     /// <summary>
     /// All the setup for spawning an Enemy
     /// </summary>
-    public void spawnEnemy(Vector3 spawnPoint, ColorEnemy color, Transform target)
-    {
-     /*   GameObject enemyprefab;
-        switch (color)
-        {
-            case ColorEnemy.Purple:
-                enemyprefab = purpleEnemyTemp;
-                break;
-            default:
-                enemyprefab = purpleEnemyTemp;
-                break;
-        }*/
-       // var newEnemy = Instantiate(enemyprefab, spawnPoint, Quaternion.identity);
-    //    newEnemy.GetComponent<BasicEnemy>().Initialize(target, EnemySpawnPointsParent, EnemyParent, statsCounter.GetComponent<EnemyKillCountController>().OnEnemyDeath);
-       /* newEnemy.GetComponent<BasicEnemy>().setTarget(target);
-        newEnemy.GetComponent<BasicEnemy>().setSpawnLocationsParent(EnemySpawnPointsParent);
-        newEnemy.GetComponent<BasicEnemy>().setEnemyParent(EnemyParent);*/
-      //  newEnemy.GetComponent<HealthController>().onDeathEvent.AddListener(statsCounter.GetComponent<EnemyKillCountController>().OnEnemyDeath);
-    }
+
 
     /// <summary>
     /// Just places the start and end of the level
@@ -83,18 +77,16 @@ public class DungeonContentGenerator : MonoBehaviour
     {
         start.transform.position = tileMapVisualizer.GetRealCoordsFromFloorTileMap(startPos);
         end.transform.position = tileMapVisualizer.GetRealCoordsFromFloorTileMap(endPos);
+        Player.SetActive(true);
         Player.transform.position = start.transform.position;
-        spawnEnemy(tileMapVisualizer.GetRealCoordsFromFloorTileMap(startPos), ColorEnemy.Purple, Player.transform);
+
     }
     /// <summary>
     /// Deletes old spawners and spawns the new ones with already generated coords
     /// </summary>
     public void PlaceSpawners(List<List<Vector2Int>> spawnersForEachRoom, List<ColorEnemy> colors, TileMapVisualizer tileMapVisualizer)
     {
-        if (parentSpawner == null)
-        {
-            parentSpawner = new GameObject("Spawners");
-        }
+        EnemyParent.SetActive(true);
         DestroySpawners();
 
         for (int i = 0; i < colors.Count; i++)
@@ -117,11 +109,11 @@ public class DungeonContentGenerator : MonoBehaviour
             }
             foreach (var spawnerPos in spawnersForEachRoom[i])
             {
-                    GameObject newSpawner = Instantiate(spawner, tileMapVisualizer.GetRealCoordsFromFloorTileMap(spawnerPos), Quaternion.identity, parentSpawner.transform);
-                    newSpawner.GetComponent<SpawnerController>().Initialize(enemyprefab,Player.transform,EnemySpawnPointsParent, EnemyParent, statsCounter.GetComponent<EnemyKillCountController>().OnEnemyDeath);
-                    SpriteRenderer spriteRenderer = newSpawner.GetComponent<SpriteRenderer>();
-                    spriteRenderer.color = GetColorFromEnum(colors[i]);
-                
+                GameObject newSpawner = Instantiate(spawner, tileMapVisualizer.GetRealCoordsFromFloorTileMap(spawnerPos), Quaternion.identity, parentSpawner.transform);
+                newSpawner.GetComponent<SpawnerController>().Initialize(enemyprefab, Player.transform, EnemySpawnPointsParent.transform, EnemyParent.transform, statsCounter.GetComponent<EnemyKillCountController>().OnEnemyDeath);
+                SpriteRenderer spriteRenderer = newSpawner.GetComponent<SpriteRenderer>();
+                spriteRenderer.color = GetColorFromEnum(colors[i]);
+
             }
         }
     }

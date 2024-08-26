@@ -101,7 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxEnemySpawn: 5
   enemyPrefab: {fileID: 0}
-  spawnRadius: 10
+  spawnRadius: 1
   spawnInterval: 3
 --- !u!114 &249936313189589947
 MonoBehaviour:

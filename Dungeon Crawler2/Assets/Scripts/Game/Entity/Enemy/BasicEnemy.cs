@@ -88,7 +88,10 @@ public abstract class BasicEnemy : MonoBehaviour, IEnemy
 
     public virtual void EnemyDeath(GameObject dead)
     {
-        spawner.GetComponent<SpawnerController>().OneOfOurSpawnedEnemiesDies();
+        if(spawner!= null)
+        {
+            spawner.GetComponent<SpawnerController>().OneOfOurSpawnedEnemiesDies();
+        }
         Destroy(spawnLocation);
 
         Destroy(gameObject);

@@ -28,7 +28,7 @@ public class ProceduralGenerationRoomGenerator : AbstractDungeonGenerator
     {
         RunProceduralGeneration();
     }
-    protected override void RunProceduralGeneration()
+    public override void RunProceduralGeneration()
     {
         tileMapVisualizer.Clear();
         CreateRooms();
@@ -62,7 +62,7 @@ public class ProceduralGenerationRoomGenerator : AbstractDungeonGenerator
 
      
         PlaceSpawners(roomColors, roomsWithoutStartAndEnd, new List<Vector2Int> { startAndEnd.Item1, startAndEnd.Item2 });
-
+        dungeonContentGenerator.DestroyEnemies();
 
         dungeonContentGenerator.PlaceStartAndEnd(startAndEnd.Item1, startAndEnd.Item2, tileMapVisualizer);
     }

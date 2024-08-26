@@ -17,10 +17,8 @@ public class BombController : MonoBehaviour
  //   public AudioSource Source;
    // public AudioClip BoomClip;
     public GameObject explosionEffect;
-
-
     private bool exploded = false;
-    private float elapsedTime = 0f;
+
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();

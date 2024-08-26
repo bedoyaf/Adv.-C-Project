@@ -16,8 +16,6 @@ public class PlayerShootingController : MonoBehaviour
     private BulletData currentBulletData;
     private ColorEnemy currentInfection  = ColorEnemy.Purple;
 
-   // private PlayerStatsController playerStatsController;
-
 
     [SerializeField] private float delayBetweenShots = 0.5f; 
     private float lastShotTime;

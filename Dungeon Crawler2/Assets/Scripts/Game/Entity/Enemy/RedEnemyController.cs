@@ -38,8 +38,6 @@ public class RedEnemyController : BasicEnemy
         Destroy(runAwaySpot);
     }
 
-
-    // Update is called once per frame
     protected override IEnumerator EnemyBehavior()
     {
         while (true)

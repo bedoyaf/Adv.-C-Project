@@ -8,7 +8,7 @@ public class SpawnerController : MonoBehaviour
     [SerializeField] private int maxEnemySpawn = 5;
     private int currentNumberOfEnemySpawn = 0;
     [SerializeField] private GameObject enemyPrefab;
-    [SerializeField] private float spawnRadius=10f;
+    [SerializeField] private float spawnRadius=2f;
     [SerializeField] private float spawnInterval = 3f;
     private float spawnTimer = 0f;
 
@@ -46,7 +46,6 @@ public class SpawnerController : MonoBehaviour
             if (spawnTimer >= spawnInterval)
             {
                 currentNumberOfEnemySpawn++;
-                Debug.Log("spawning enemy");
                 SpawnEnemy();
                 spawnTimer = 0f; 
             }
@@ -55,9 +54,14 @@ public class SpawnerController : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        var newEnemy = Instantiate(enemyPrefab, transform.position, Quaternion.identity);
+        Vector2 randomPoint = Random.insideUnitCircle * spawnRadius;
+        Vector3 spawnPosition = new Vector3(randomPoint.x, randomPoint.y, 0) + transform.position;
+
+        var newEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
         newEnemy.GetComponent<BasicEnemy>().Initialize(target, EnemySpawnPointsParent, EnemyParent, gameObject, onDeathCallback);
     }
+
+
 
     public void OneOfOurSpawnedEnemiesDies()
     {

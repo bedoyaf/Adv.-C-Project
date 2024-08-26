@@ -39,13 +39,8 @@ public class PlayerStatsController : MonoBehaviour
         animator.runtimeAnimatorController = animationControllers[index];
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     public virtual void PlayerDeath(GameObject dead)
     {
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }

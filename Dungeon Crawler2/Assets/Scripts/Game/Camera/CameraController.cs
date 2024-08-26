@@ -6,7 +6,6 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     [SerializeField] private Camera myCamera = null;
-    [SerializeField] private CinemachineVirtualCamera myCineMachine = null;
     [SerializeField] private GameObject followPointer = null;
 
     [SerializeField] private GameObject unitGameObject = null;

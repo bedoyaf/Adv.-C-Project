@@ -30,7 +30,7 @@ public class HealthController : MonoBehaviour, IDamageable
         }
     }
 
-    private void Die()
+    public void Die()
     {
         Debug.Log($"{gameObject.name} died!");
        // Destroy(gameObject);

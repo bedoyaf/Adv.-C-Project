@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// This class juist keeps the Health data on the UI up to date
+/// </summary>
 public class HealthTextController : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI textMesh;
@@ -17,7 +20,6 @@ public class HealthTextController : MonoBehaviour
 
     void OnDestroy()
     {
-        // Unsubscribe from the event to avoid memory leaks
         if (healthController != null)
         {
             healthController.onTakeDamage.RemoveListener(UpdateHealthText);
