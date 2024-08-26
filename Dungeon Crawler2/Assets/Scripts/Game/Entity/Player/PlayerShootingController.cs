@@ -8,16 +8,22 @@ public class PlayerShootingController : MonoBehaviour
     private SpriteRenderer spriteRenderer;
 
     [SerializeField] private GameObject bulletPrefab;    
-    [SerializeField] private GameObject bombPrefab;
-    private Transform firePoint;        
+    [SerializeField] private GameObject bombPrefab;       
     private Rigidbody2D rb;
     [SerializeField] BulletData longRangeBullet;
     [SerializeField] BulletData shortRangeBullet;
     private BulletData currentBulletData;
     private ColorEnemy currentInfection  = ColorEnemy.Purple;
+    [SerializeField] private GameObject flamePrefab;          
+    [SerializeField] private Transform flamePoint;
+    private float flameRate = 0.1f;
+    private bool isFiring = false;
+    private GameObject currentFlameInstance;
+    private float flameDistanceFromPlayer = 2f;
+    [SerializeField] private float flamerCooldown =1f;
+    private float lastFlame = 0f;
 
-
-    [SerializeField] private float delayBetweenShots = 0.5f; 
+    [SerializeField] private float delayBetweenShots = 1f; 
     private float lastShotTime;
 
     void Start()
@@ -28,9 +34,31 @@ public class PlayerShootingController : MonoBehaviour
 
     void Update()
     {
+        FlipSpriteIfNecessary();
+
+        if (Input.GetMouseButtonDown(1)) // 0 = left mouse button
+        {
+            Attack();
+        }
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            StartFlameThrower();
+        }
+
+        if (Input.GetButtonUp("Fire1"))
+        {
+            StopFlameThrower();
+        }
+            UpdateFlamePointDirection();
+        
+
+    }
+
+    private void FlipSpriteIfNecessary()
+    {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        //flip sprites according to mouse
         if (mousePosition.x < transform.position.x)
         {
             spriteRenderer.flipX = true;
@@ -39,12 +67,27 @@ public class PlayerShootingController : MonoBehaviour
         {
             spriteRenderer.flipX = false;
         }
+    }
 
-        if (Input.GetMouseButtonDown(0)) // 0 = left mouse button
+    private void StopFlameThrower()
+    {
+        if (isFiring)
         {
-            Attack();
+            isFiring = false;
+            Destroy(currentFlameInstance);  // Destroy the current flame instance when the player releases the button
         }
-
+    }
+    private void StartFlameThrower()
+    {
+        if (Time.time >= lastFlame + flamerCooldown)
+        {
+            if (!isFiring)
+            {
+                lastFlame = Time.time;
+                isFiring = true;
+                currentFlameInstance = Instantiate(flamePrefab, flamePoint.position, flamePoint.rotation, flamePoint);
+            }
+        }
     }
     public void SetInfection(ColorEnemy newInfection)
     {
@@ -105,6 +148,19 @@ public class PlayerShootingController : MonoBehaviour
     void PlantBomb()
     {
         Instantiate(bombPrefab, transform.position, Quaternion.identity);
+    }
+
+    private void UpdateFlamePointDirection()
+    {
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePosition.z = 0f;
+
+        Vector3 directionToMouse = (mousePosition - transform.position).normalized;
+
+        flamePoint.position = transform.position + directionToMouse * flameDistanceFromPlayer;
+
+        float angle = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg;
+        flamePoint.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
     }
 
 }

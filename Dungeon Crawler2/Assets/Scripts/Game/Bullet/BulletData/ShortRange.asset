@@ -16,4 +16,4 @@ MonoBehaviour:
   damage: 20
   despawnDistance: 5
   sprite: {fileID: 865996259, guid: 36b6023f4166af74585d57adaa8e2397, type: 3}
-  rotationAngle: -90
+  rotationAngle: 0

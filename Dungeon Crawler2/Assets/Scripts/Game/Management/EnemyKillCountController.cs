@@ -13,9 +13,9 @@ public class EnemyKillCountController : MonoBehaviour
     [SerializeField] TextMeshProUGUI textPurplePoints;
     [SerializeField] TextMeshProUGUI textGreenPoints;
 
-    [SerializeField] private int RedPoints = 0;
-    [SerializeField] private int PurplePoints = 0;
-    [SerializeField] private int GreenPoints = 0;
+    [SerializeField] public int RedPoints { get; private set; } = 0;
+    [SerializeField] public int PurplePoints { get; private set; } = 0;
+    [SerializeField] public int GreenPoints { get; private set; } = 0;
     void Start()
     {
         enemyTypeRed.GetComponent<HealthController>().onDeathEvent.AddListener(OnEnemyDeath);
@@ -26,7 +26,7 @@ public class EnemyKillCountController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void OnEnemyDeath(GameObject enemy)
@@ -45,6 +45,14 @@ public class EnemyKillCountController : MonoBehaviour
                 RedPoints++;
                 break;
         }
+        UpdateTextPoints();
+    }
+
+    public void ResetPoints()
+    {
+        RedPoints= 0;
+        GreenPoints= 0;
+        PurplePoints= 0;
         UpdateTextPoints();
     }
 

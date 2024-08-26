@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,6 +8,7 @@ public class HealthController : MonoBehaviour, IDamageable
 {
     [SerializeField]
     public int maxHealth = 100;
+    [SerializeField] private float damageModifier = 1f;
     public int currentHealth { get; private set; }
 
     [SerializeField] public UnityEvent<int> onTakeDamage;
@@ -19,6 +21,7 @@ public class HealthController : MonoBehaviour, IDamageable
 
     public void TakeDamage(int damage)
     {
+        damage =(int)(damage * damageModifier);
         currentHealth -= damage;
         onTakeDamage?.Invoke(damage);
         Debug.Log($"{gameObject.name} took {damage} damage.");
@@ -27,6 +30,15 @@ public class HealthController : MonoBehaviour, IDamageable
         {
             currentHealth = 0;
             Die();
+        }
+    }
+
+    public void Heal(int amount)
+    {
+        currentHealth += amount;
+        if(currentHealth >maxHealth)
+        {
+            currentHealth = maxHealth;
         }
     }
 
