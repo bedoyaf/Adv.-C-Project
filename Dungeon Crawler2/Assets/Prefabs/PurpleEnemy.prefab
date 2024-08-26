@@ -74,7 +74,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  OnTakeDamage:
+  onTakeDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  onDeathEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!212 &1078796982813498261
@@ -147,6 +150,7 @@ MonoBehaviour:
   shootingRange: 17
   shootingCooldown: 1
   spawnLocationsParent: {fileID: 0}
+  enemyParent: {fileID: 0}
   bulletPrefab: {fileID: 620423418827414382, guid: 7cec1422d946ff24facb96d478247a1c, type: 3}
   bulletData: {fileID: 11400000, guid: fc8ca0d7dbfadfb4487686b9aaabeb7c, type: 2}
 --- !u!58 &-4229435064104362052

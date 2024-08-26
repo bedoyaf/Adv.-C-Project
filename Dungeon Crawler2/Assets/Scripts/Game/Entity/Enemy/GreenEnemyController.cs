@@ -13,6 +13,7 @@ public class GreenEnemyController : BasicEnemy
         ConfigurateBasicFields();
         StartCoroutine(EnemyBehavior());
         spriteFlipCustomizer = false;
+        colorOfEnemy = ColorEnemy.Green;
     }
     public override void Attack()
     {
@@ -25,8 +26,8 @@ public class GreenEnemyController : BasicEnemy
         Vector3 currentPosition = transform.position;
         currentPosition.z = 0;
         GameObject bullet = Instantiate(bulletPrefab, currentPosition, Quaternion.identity);
+        bullet.GetComponent<BulletController>().setBulletData(bulletData);
         bullet.GetComponent<BulletController>().SetDirection(shootDirection, currentPosition, bulletSpeed);
         bullet.GetComponent<BulletController>().SetTag(gameObject);
-        bullet.GetComponent<BulletController>().setBulletData(bulletData);
     }
 }

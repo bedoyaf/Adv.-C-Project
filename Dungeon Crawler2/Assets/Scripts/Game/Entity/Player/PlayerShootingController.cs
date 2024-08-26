@@ -7,12 +7,19 @@ public class PlayerShootingController : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
 
-    public GameObject bulletPrefab;    // The bullet prefab to instantiate
-    public Transform firePoint;        // The point from where the bullet will be fired
-    public float bulletSpeed = 10f;
+    [SerializeField] private GameObject bulletPrefab;    
+    [SerializeField] private GameObject bombPrefab;
+    private Transform firePoint;        
     private Rigidbody2D rb;
+    [SerializeField] BulletData longRangeBullet;
+    [SerializeField] BulletData shortRangeBullet;
+    private BulletData currentBulletData;
+    private ColorEnemy currentInfection  = ColorEnemy.Purple;
 
-    public float delayBetweenShots = 0.5f; // Adjust this value to set the delay between shots
+   // private PlayerStatsController playerStatsController;
+
+
+    [SerializeField] private float delayBetweenShots = 0.5f; 
     private float lastShotTime;
 
     void Start()
@@ -25,6 +32,7 @@ public class PlayerShootingController : MonoBehaviour
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
+        //flip sprites according to mouse
         if (mousePosition.x < transform.position.x)
         {
             spriteRenderer.flipX = true;
@@ -36,37 +44,69 @@ public class PlayerShootingController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0)) // 0 = left mouse button
         {
-
-            if (Time.time - lastShotTime > delayBetweenShots)
-            {
-                Shoot();
-                lastShotTime = Time.time;
-            }
+            Attack();
         }
 
+    }
+    public void SetInfection(ColorEnemy newInfection)
+    {
+        currentInfection = newInfection;
+        switch (currentInfection)
+        {
+            case ColorEnemy.Purple:
+                currentBulletData = longRangeBullet;
+                break;
+            case ColorEnemy.Green:
+                currentBulletData = shortRangeBullet;
+                break;
+        }
+    }
+
+    public void Attack()
+    {
+        if (Time.time - lastShotTime > delayBetweenShots)
+        {
+            if(currentInfection == ColorEnemy.Purple)
+            {
+                Shoot();
+            }
+            else if(currentInfection == ColorEnemy.Red)
+            {
+                PlantBomb();
+            }
+            else if(currentInfection == ColorEnemy.Green)
+            {
+                Shoot();
+            }
+            else
+            {
+                Debug.Log("No infection");
+            }
+            lastShotTime = Time.time;
+        }
     }
 
     void Shoot()
     {
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
 
-            Vector3 mousePosition = Input.mousePosition;
-            mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        Vector2 shootDirection = (mousePosition - transform.position).normalized;
 
-            Vector2 shootDirection = (mousePosition - transform.position).normalized;
+        float bulletSpeed = rb.velocity.magnitude;//*dotProduct;
+                                                  // Debug.Log(bulletSpeed);
+        GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+        Vector3 currentPosition = transform.position;
 
-            // Get the player's Rigidbody2D component (assuming the player has one)
-
-            // Calculate the bullet speed by combining the bullet's speed and the player's speed
-            // float dotProduct = Vector2.Dot(shootDirection, rb.velocity);
-            float bulletSpeed = rb.velocity.magnitude;//*dotProduct;
-                                                      // Debug.Log(bulletSpeed);
-            GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
-            Vector3 currentPosition = transform.position;
-
-            // Set the bullet's direction and speed
-            bullet.GetComponent<BulletController>().SetDirection(shootDirection, currentPosition, bulletSpeed);
+        bullet.GetComponent<BulletController>().SetDirection(shootDirection, currentPosition, bulletSpeed);
         bullet.GetComponent<BulletController>().SetTag(gameObject);
+        bullet.GetComponent<BulletController>().setBulletData(currentBulletData);
 
+    }
+
+    void PlantBomb()
+    {
+        Instantiate(bombPrefab, transform.position, Quaternion.identity);
     }
 
 }

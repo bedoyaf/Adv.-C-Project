@@ -14,20 +14,21 @@ public class BulletController : MonoBehaviour
      [SerializeField] int damage = 10;
       [SerializeField]
       private float despawnDistance = 20f;
-   // [SerializeField] private SpriteRenderer _spriteRenderer;
+     private SpriteRenderer _spriteRenderer;
     [SerializeField] private BulletData bulletData;
 
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        _spriteRenderer = rb.GetComponent<SpriteRenderer>();
     }
 
     public void setBulletData(BulletData newbulletData)
     {
         bulletData = newbulletData;
         var _spriteRenderer = GetComponent<SpriteRenderer>();
-        _spriteRenderer.sprite = bulletData.sprite;
+        _spriteRenderer.sprite = newbulletData.sprite;
         speed = newbulletData.speed;
         damage = newbulletData.damage;
         despawnDistance = newbulletData.despawnDistance;
@@ -98,9 +99,18 @@ public class BulletController : MonoBehaviour
             }
             Destroy(gameObject);  
         }
+        else if(collision.CompareTag("Spawner"))
+        {
+            IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
+
+            if (damageable != null)
+            {
+                damageable.TakeDamage(damage);
+            }
+            DestroyObject(gameObject);
+        }
         else if(collision.CompareTag("Structure"))
         {
-            Debug.Log("tefil zed");
             Destroy(gameObject);  
         }
     }

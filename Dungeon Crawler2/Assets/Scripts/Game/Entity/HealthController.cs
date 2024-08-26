@@ -9,7 +9,8 @@ public class HealthController : MonoBehaviour, IDamageable
     public int maxHealth = 100;
     private int currentHealth;
 
-    public UnityEvent<int> OnTakeDamage; 
+    [SerializeField] private UnityEvent<int> onTakeDamage;
+    [SerializeField] public UnityEvent<GameObject> onDeathEvent;
 
     void Start()
     {
@@ -19,7 +20,7 @@ public class HealthController : MonoBehaviour, IDamageable
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        OnTakeDamage?.Invoke(damage);
+        onTakeDamage?.Invoke(damage);
         Debug.Log($"{gameObject.name} took {damage} damage.");
 
         if (currentHealth <= 0)
@@ -31,6 +32,7 @@ public class HealthController : MonoBehaviour, IDamageable
     private void Die()
     {
         Debug.Log($"{gameObject.name} died!");
-        Destroy(gameObject);
+       // Destroy(gameObject);
+        onDeathEvent?.Invoke(gameObject);
     }
 }

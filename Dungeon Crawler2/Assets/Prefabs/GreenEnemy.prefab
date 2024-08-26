@@ -157,7 +157,7 @@ MonoBehaviour:
   radius: 0.69
   height: 2
   canMove: 1
-  maxSpeed: 15
+  maxSpeed: 7
   gravity: {x: NaN, y: NaN, z: NaN}
   groundMask:
     serializedVersion: 2
@@ -215,6 +215,7 @@ MonoBehaviour:
   shootingRange: 10
   shootingCooldown: 2
   spawnLocationsParent: {fileID: 0}
+  enemyParent: {fileID: 0}
   bulletPrefab: {fileID: 620423418827414382, guid: 7cec1422d946ff24facb96d478247a1c, type: 3}
   bulletData: {fileID: 11400000, guid: b4b7bf038f9e3f24580b21c699e5e704, type: 2}
 --- !u!50 &5465780249322176153
@@ -292,6 +293,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  OnTakeDamage:
+  onTakeDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  onDeathEvent:
     m_PersistentCalls:
       m_Calls: []

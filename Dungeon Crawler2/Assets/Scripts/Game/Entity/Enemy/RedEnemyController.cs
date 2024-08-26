@@ -1,0 +1,118 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Drawing;
+using UnityEngine;
+using UnityEngine.AI;
+
+public class RedEnemyController : BasicEnemy
+{
+    [SerializeField] GameObject bombPrefab;
+    [SerializeField] float bombPlantingDistance = 2f;
+    [SerializeField] float safeDistance = 10f; // Distance to run away from player and bomb
+    [SerializeField] float explosionCooldown = 2.5f; // Cooldown between bomb planting
+
+    private GameObject runAwaySpot;
+    Vector3 lastBombPosition;
+    bool hasPlantedBomb = false;
+    float explosionTimer = 0f;
+
+    void Start()
+    {
+        ConfigurateBasicFields();
+        StartCoroutine(EnemyBehavior());
+        runAwaySpot = new GameObject("RunAwaySpot");
+        runAwaySpot.transform.parent = spawnLocationsParent;
+        spriteFlipCustomizer = false;
+        colorOfEnemy = ColorEnemy.Red;
+    }
+    public override void Attack()
+    {
+        PlantBomb();
+    }
+
+    public override void EnemyDeath(GameObject dead)
+    {
+        Destroy(spawnLocation);
+
+        Destroy(gameObject);
+        Destroy(runAwaySpot);
+    }
+
+
+    // Update is called once per frame
+    protected override IEnumerator EnemyBehavior()
+    {
+        while (true)
+        {
+            float distanceToTarget = Vector3.Distance(transform.position, target.position);
+            if (distanceToTarget > EnemyVision)
+            {
+                destinationSetter.target = spawnLocation.transform;
+            }
+            else
+            {
+                if (explosionTimer <= 0f)
+                {
+                    hasPlantedBomb = false; 
+                    explosionTimer = 0; 
+                    FlipSprite(target.transform);
+                }
+                else
+                {
+                    explosionTimer -= Time.deltaTime; // Decrease the cooldown timer
+                }
+
+                if (!hasPlantedBomb)
+                {
+                    if (!HasObstaclesInFrontOfEnemy())
+                    {
+                        currentState = EnemyState.Pursue;
+                    }
+                    if (currentState == EnemyState.Idle)
+                    {
+                        aiPath.canMove = false;
+                    }
+                    else
+                    {
+                        destinationSetter.target = target;
+                        aiPath.canMove = true;
+                    }
+
+                    // Check if the enemy is close enough to the player to plant the bomb
+                    if (distanceToTarget <= bombPlantingDistance)
+                    {
+                        hasPlantedBomb = true;
+                        explosionTimer = explosionCooldown;
+                        Attack();
+                    }
+                }
+                // If bomb is already planted, run away
+                else
+                {
+                    Vector3 directionToPlayer = (transform.position - target.position).normalized;
+                    Vector3 directionToBomb = (transform.position - lastBombPosition).normalized;
+                    Vector3 safeDirection = (directionToPlayer + directionToBomb).normalized;
+                    Vector3 targetPosition = transform.position + safeDirection * safeDistance;
+                    runAwaySpot.transform.position = targetPosition;
+                    destinationSetter.target = runAwaySpot.transform;
+                    FlipSprite(runAwaySpot.transform);
+                }
+                float diroflooking = -transform.position.x + target.position.x;
+            }
+            yield return null;
+        }
+    }
+
+    void PlantBomb()
+    {
+        Vector3 lastBombPosition = GetBombPosition();
+        Instantiate(bombPrefab, lastBombPosition, Quaternion.identity);
+    }
+
+    Vector3 GetBombPosition()
+    {
+        Vector3 directionToPlayer = (target.position - transform.position).normalized;
+        Vector3 bombPosition = target.position + directionToPlayer * -bombPlantingDistance;
+        return bombPosition;
+    }
+}
