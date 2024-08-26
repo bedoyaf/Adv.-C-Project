@@ -8937,7 +8937,7 @@ GameObject:
   - component: {fileID: 565575909}
   - component: {fileID: 565575908}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Health
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9396,6 +9396,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1024800660}
   - component: {fileID: 1024800661}
+  - component: {fileID: 1024800662}
   m_Layer: 0
   m_Name: PointsManager
   m_TagString: Untagged
@@ -9439,6 +9440,20 @@ MonoBehaviour:
   RedPoints: 0
   PurplePoints: 0
   GreenPoints: 0
+--- !u!114 &1024800662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1024800659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59e366c9516e2d24b93cd7a4c3ed9a7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textMesh: {fileID: 565575908}
+  healthController: {fileID: 1447161182}
 --- !u!1 &1044448404
 GameObject:
   m_ObjectHideFlags: 0
@@ -9968,7 +9983,19 @@ MonoBehaviour:
   maxHealth: 100
   onTakeDamage:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1024800662}
+        m_TargetAssemblyTypeName: HealthTextController, Assembly-CSharp
+        m_MethodName: UpdateHealthText
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onDeathEvent:
     m_PersistentCalls:
       m_Calls: []

@@ -7,9 +7,9 @@ public class HealthController : MonoBehaviour, IDamageable
 {
     [SerializeField]
     public int maxHealth = 100;
-    private int currentHealth;
+    public int currentHealth { get; private set; }
 
-    [SerializeField] private UnityEvent<int> onTakeDamage;
+    [SerializeField] public UnityEvent<int> onTakeDamage;
     [SerializeField] public UnityEvent<GameObject> onDeathEvent;
 
     void Start()
@@ -25,6 +25,7 @@ public class HealthController : MonoBehaviour, IDamageable
 
         if (currentHealth <= 0)
         {
+            currentHealth = 0;
             Die();
         }
     }
