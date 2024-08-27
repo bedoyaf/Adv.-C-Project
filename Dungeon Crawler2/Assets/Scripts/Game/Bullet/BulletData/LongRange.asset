@@ -17,3 +17,4 @@ MonoBehaviour:
   despawnDistance: 60
   sprite: {fileID: -590080596, guid: 36b6023f4166af74585d57adaa8e2397, type: 3}
   rotationAngle: 0
+  audioClip: {fileID: 8300000, guid: 13630373898d129419b153be3ee99f28, type: 3}

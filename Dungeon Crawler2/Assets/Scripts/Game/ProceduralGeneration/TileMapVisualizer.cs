@@ -35,15 +35,10 @@ public class TileMapVisualizer : MonoBehaviour
     [Range(0f, 1f)]
     private float chanceOfColorWalls = 0.2f;
 
-    public Bounds GetWallBounds()
-    {
-        Vector3 min = wallTilemap.GetCellCenterWorld(wallTilemap.cellBounds.position);
-        Vector3 max = wallTilemap.GetCellCenterWorld(wallTilemap.cellBounds.position + wallTilemap.cellBounds.size);
-
-        Bounds bounds = new Bounds((min + max) / 2, max - min);
-        return bounds;
-    }
-
+    /// <summary>
+    /// Just calls the Paint Tiles with floortilemap
+    /// </summary>
+    /// <param name="floorPositions">all the coordinates for the floor tiles</param>
     public void PaintFloorandPerspectiveWallTiles(IEnumerable<Vector2Int> floorPositions)
     {
         PaintTiles(floorPositions, floorTilemap);
@@ -51,6 +46,8 @@ public class TileMapVisualizer : MonoBehaviour
     /// <summary>
     /// For each floor tile it checks if it should be a perspective wall and then by chance places a normal or a more special tile
     /// </summary>
+    /// <param name="tilepositions">all the coordinates we want to add a tile to</param>
+    /// <param name="tilemap">the tilemap we will be placing the tiles into</param>
     private void PaintTiles(IEnumerable<Vector2Int> tilepositions, Tilemap tilemap)
     {
         foreach (var tilepos in tilepositions)
@@ -76,18 +73,27 @@ public class TileMapVisualizer : MonoBehaviour
             }
         }
     }
-
+    /// <summary>
+    /// Just sets up the tile
+    /// </summary>
+    /// <param name="tilemap">the tilemap we will be placing the tiles into</param>
+    /// <param name="tile">the tile sprite we will be placing</param>
+    /// <param name="tilepos">the tiles spot in the tilemap</param>
     private void PaintSingleTile(Tilemap tilemap, TileBase tile, Vector2Int tilepos)
     {
-        //    var tilePosition = tilemap.WorldToCell((Vector3Int)tilepos);
         tilemap.SetTile((Vector3Int)tilepos, tile);
     }
+    /// <summary>
+    /// Clears all the tilemaps
+    /// </summary>
     public void Clear()
     {
         floorTilemap.ClearAllTiles();
         wallTilemap.ClearAllTiles();
     }
-
+    /// <summary>
+    /// Calls Paint single with a wallTilemap
+    /// </summary>
     internal void paintSingleBasickWall(Vector2Int position)
     {
         PaintSingleTile(wallTilemap, wallTop, position);
@@ -95,6 +101,9 @@ public class TileMapVisualizer : MonoBehaviour
     /// <summary>
     /// Just configurates a bit and calls the main coloring function
     /// </summary>
+    /// <param name="room">the room we will be painting</param>
+    /// <param name="floorpositions">all the coordinates of the floor</param>
+    /// /// <param name="color">the color for this room, coresponding to one of the enemy types</param>
     public void ColourPaintRoom(BoundsInt room, IEnumerable<Vector2Int> floorpositions, ColorEnemy color)
     {
         List<TileBase> walls = new List<TileBase>();
@@ -122,6 +131,11 @@ public class TileMapVisualizer : MonoBehaviour
     /// <summary>
     /// Goas through each tile of the room and by chance repaints them to the color
     /// </summary>
+    /// <param name="room">the room we will be painting</param>
+    /// <param name="tilepositions">all the coordinates of the floor</param>
+    /// <param name="walls">colored wall tiles not actual wall but the one that adds perspecitve</param>
+    /// <param name="floors">colored floor tiles that will be painted</param>
+    /// <param name="tilemap">The tilemap we will be painting on</param>
     private void ColorASpecificRoom(BoundsInt room, IEnumerable<Vector2Int> tilepositions, List<TileBase> walls, List<TileBase> floors, Tilemap tilemap)
     {
         for (int x = room.min.x+1; x < room.max.x-1; x++)
@@ -150,6 +164,9 @@ public class TileMapVisualizer : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// Just gets the coordinates in the game from the tile coordinates, helps with placement in relation to tilemap
+    /// </summary>
     public Vector3 GetRealCoordsFromFloorTileMap(Vector2Int tilecoords)
     {
         return floorTilemap.CellToWorld(new Vector3Int(tilecoords.x, tilecoords.y, 0));

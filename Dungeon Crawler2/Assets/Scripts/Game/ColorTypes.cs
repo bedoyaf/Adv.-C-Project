@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Helping class for generating random colors for enemies
+/// </summary>
 public static class ColorsOfTheEnemies
 {
-    // Initialize the list with the correct enum references
     public static List<ColorEnemy> colors = new List<ColorEnemy>
     {
         ColorEnemy.Green,
@@ -16,6 +18,9 @@ public static class ColorsOfTheEnemies
         return colors[UnityEngine.Random.Range(0,colors.Count)];
     }
 }
+/// <summary>
+/// The enum of the 3 enemy types in the game
+/// </summary>
 public enum ColorEnemy
 {
     None,

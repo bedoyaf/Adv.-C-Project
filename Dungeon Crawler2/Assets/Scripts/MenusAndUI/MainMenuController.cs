@@ -5,12 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
 {
+    /// <summary>
+    /// Loads the the main scene
+    /// </summary>
     public void PlayGame()
     {
-        Debug.Log("start game");
         SceneManager.LoadSceneAsync("SampleScene");
     }
-
+    /// <summary>
+    /// Shuts down the game
+    /// </summary>
     public void QuitGame()
     {
         Application.Quit();

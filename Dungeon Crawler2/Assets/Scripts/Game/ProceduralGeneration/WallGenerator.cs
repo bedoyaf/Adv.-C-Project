@@ -11,8 +11,8 @@ public class WallGenerator : MonoBehaviour
     /// </summary>
     public static void CreateWalls(HashSet<Vector2Int> floorPositions, TileMapVisualizer tileMapVisualizer)
     {
-        var basicWallPositions = FindWallsInDirections(floorPositions, RandomDirectionGenerator.directions);
-        basicWallPositions.UnionWith(patchCorners(floorPositions, RandomDirectionGenerator.directions, basicWallPositions));
+        var basicWallPositions = FindWallsInDirections(floorPositions, DirectionManager.directions);
+        basicWallPositions.UnionWith(patchCorners(floorPositions, DirectionManager.directions, basicWallPositions));
         foreach (var position in basicWallPositions)
         {
             tileMapVisualizer.paintSingleBasickWall(position);
@@ -51,10 +51,9 @@ public class WallGenerator : MonoBehaviour
 
         foreach (var position in floorPositions)
         {
-            int emptyNeighbours = 0;
             foreach (var direction in directions)
             {
-                foreach (var dir in RandomDirectionGenerator.diagonalDirections)
+                foreach (var dir in DirectionManager.diagonalDirections)
                 {
                     var diagonalNeighbour = position + dir;
                     if (!floorPositions.Contains(diagonalNeighbour) && !wallPositions.Contains(diagonalNeighbour))
@@ -68,7 +67,10 @@ public class WallGenerator : MonoBehaviour
     }
 
 }
-public static class RandomDirectionGenerator
+/// <summary>
+/// Goes throgh the floor tiles and if they are adjecant to an empty space, they add that as a wall
+/// </summary>
+public static class DirectionManager
 {
     public static List<Vector2Int> directions = new List<Vector2Int>
     {
@@ -84,9 +86,4 @@ public static class RandomDirectionGenerator
             new Vector2Int(-1,1),
             new Vector2Int(1,1)
         };
-    public static Vector2Int GetRandomDirection()
-    {
-        return directions[UnityEngine.Random.Range(0, directions.Count)];
-    }
-
 }

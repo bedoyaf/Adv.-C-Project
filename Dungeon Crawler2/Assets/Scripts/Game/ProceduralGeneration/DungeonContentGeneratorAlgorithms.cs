@@ -14,6 +14,9 @@ public static class DungeonContentGeneratorAlgorithms
     /// Bit randomly gets coordinates in a circular fashion for placing spawners
     /// This way their placement looks natural and they concentrate more on the center of the room
     /// </summary>
+    /// <param name="room">The room in question</param>
+    /// <param name="numberOfObjects">How many spawners will be placed there</param>
+    /// <returns>List of coordinates to place</returns>
     public static List<Vector2Int> PlaceCoordinatesCircularPatternInRoom(BoundsInt room,int numberOfObjects)
     {
         List<Vector2Int> positions = new List<Vector2Int>();
@@ -47,6 +50,9 @@ public static class DungeonContentGeneratorAlgorithms
     /// <summary>
     /// Just a BFS algorithm that for each room finds the one furthest away and then sends back the most distant rooms
     /// </summary>
+    /// <param name="roomcenters">All the center positions of rooms</param>
+    /// <param name="floor">All positions of where the floor is</param>
+    /// <returns>Tuple of two coordinates one being the start of the level the other the end, they signify the most distant rooms from each other</returns>
     public static Tuple<Vector2Int, Vector2Int> GetTwoRoomsFurthestFromEachOther(List<Vector2Int> roomcenters, IEnumerable<Vector2Int> floor)
     {
         int longestDistance = 0;
@@ -68,7 +74,7 @@ public static class DungeonContentGeneratorAlgorithms
                     currentMostDistantRoom = currentPoint.Item1;
                     currentLongest = currentPoint.Item2;
                 }
-                foreach(var direction in RandomDirectionGenerator.directions)
+                foreach(var direction in DirectionManager.directions)
                 {
                     var neighbour = currentPoint.Item1+ direction;
                     if(floor.Contains(neighbour) && !visited.Contains(neighbour))

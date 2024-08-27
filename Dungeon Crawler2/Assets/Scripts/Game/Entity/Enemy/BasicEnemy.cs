@@ -13,33 +13,30 @@ using UnityEngine.Events;
 /// </summary>
 public abstract class BasicEnemy : MonoBehaviour, IEnemy
 {
-    protected EnemyState currentState = EnemyState.Idle;
-    protected SpriteRenderer _spriteRenderer;
+    //path finding
     [SerializeField]
     protected Transform target;
     [SerializeField]
     protected float EnemyVision = 20f;
     [SerializeField]
     protected int movementSpeed = 5;
-    [SerializeField]
-    protected float shootingRange, shootingCooldown;
-    protected float shootTimer;
-    //   protected NavMeshAgent agent;
     protected AIDestinationSetter destinationSetter;
     protected AIPath aiPath;
-    //protected 
-    private GameObject spawner;
-    [SerializeField]
-    protected Transform spawnLocationsParent, enemyParent;
-
+    //helpers
+    protected SpriteRenderer _spriteRenderer;
     protected GameObject spawnLocation;
     protected bool spriteFlipCustomizer = true;
     protected Rigidbody2D _rigidBody;
-
+    private GameObject spawner;
+    [SerializeField] protected Transform spawnLocationsParent, enemyParent;
+    //states
     public ColorEnemy colorOfEnemy { get; protected set; }
+    protected EnemyState currentState = EnemyState.Idle;
 
-
+    //attacking
     bool isShooting = false;
+    [SerializeField] protected float shootingRange, shootingCooldown;
+    protected float shootTimer;
 
     void Start()
     {
@@ -58,13 +55,20 @@ public abstract class BasicEnemy : MonoBehaviour, IEnemy
         enemycontroller.onDeathEvent.AddListener(EnemyDeath);
 
     }
-
-    public void Initialize(Transform newTarget, Transform spawnLocsParent, Transform newEnemyParent, GameObject _mySpawner, UnityAction<GameObject> onDeathCallback)
+    /// <summary>
+    /// Initializes the Enemy
+    /// </summary>
+    /// <param name="newTarget">The enemy target, in this case the player</param>
+    /// <param name="spawnLocsParent">the objects whose parent will be in the hierarchie the spawn point</param>
+    /// <param name="newEnemyParent">the objects whose parent will be in the hierarchie the enemy</param>
+    /// <param name="_mySpawner">The spawner that spawned this enemy</param>
+    /// <param name="inCrementationOfPoints">a listener that increments upon the enemys death the rgp points</param>
+    public void Initialize(Transform newTarget, Transform spawnLocsParent, Transform newEnemyParent, GameObject _mySpawner, UnityAction<GameObject> inCrementationOfPoints)
     {
         setTarget(newTarget);
         setSpawnLocationsParent(spawnLocsParent);
         setEnemyParent(newEnemyParent);
-        GetComponent<HealthController>().onDeathEvent.AddListener(onDeathCallback);
+        GetComponent<HealthController>().onDeathEvent.AddListener(inCrementationOfPoints);
         spawner =_mySpawner;
     }
 
@@ -72,6 +76,9 @@ public abstract class BasicEnemy : MonoBehaviour, IEnemy
     {
         target = newTarget;
     }
+    /// <summary>
+    /// Just sets up the spawn location to be in the hierarchy under the parent
+    /// </summary>
     private void setSpawnLocationsParent(Transform spawnLocsparent)
     {
         spawnLocationsParent = spawnLocsparent;
@@ -79,13 +86,18 @@ public abstract class BasicEnemy : MonoBehaviour, IEnemy
         spawnLocation.transform.position = transform.position;
         spawnLocation.transform.parent = spawnLocationsParent;
     }
+    /// <summary>
+    /// Just sets up the enemy to be in the hierarchy under the parent
+    /// </summary>
     private void setEnemyParent(Transform newEnemyParent)
     {
         enemyParent = newEnemyParent;
         gameObject.transform.parent = enemyParent;
     }
 
-
+    /// <summary>
+    /// Enemy death that makes sure it destroys everithing and lets the spawner know it can spawn more enemies
+    /// </summary>
     public virtual void EnemyDeath(GameObject dead)
     {
         if(spawner!= null)
@@ -98,7 +110,9 @@ public abstract class BasicEnemy : MonoBehaviour, IEnemy
     }
 
     public abstract void Attack();
-
+    /// <summary>
+    /// Currently empty, might add strolling around or certain animations
+    /// </summary>
     protected void Idle()
     {
 
@@ -140,6 +154,9 @@ public abstract class BasicEnemy : MonoBehaviour, IEnemy
             yield return null;
         }
     }
+    /// <summary>
+    /// if has correct range and line of sight it shoots, if not aproaches
+    /// </summary>
     protected void Pursue(float distanceToTarget, bool hasObstacle)
     {
         FlipSprite(target);
@@ -157,11 +174,13 @@ public abstract class BasicEnemy : MonoBehaviour, IEnemy
 
         if (isShooting)
         {
-            withConsiderationToTimeShoot();
+            withConsiderationToTimeAttack();
         }
     }
-
-    protected void withConsiderationToTimeShoot()
+    /// <summary>
+    /// attacks, just checks the cooldown
+    /// </summary>
+    protected void withConsiderationToTimeAttack()
     {
         if (shootTimer <= 0f)
         {
@@ -208,7 +227,6 @@ public abstract class BasicEnemy : MonoBehaviour, IEnemy
         {
             return true;
         }
-
         return false;
     }
 

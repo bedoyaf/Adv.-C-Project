@@ -3,20 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Adjusts a an object that is always between the Player and the mouse, then the camera follows it by cinemachine
+/// </summary>
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private Camera myCamera = null;
-    [SerializeField] private GameObject followPointer = null;
+    [SerializeField] private Camera myCamera = null;  //main camera
+    [SerializeField] private GameObject followPointer = null;   //the helping object that is always between the mouse and the player nad the cinemachine camera follows it
+    [SerializeField] private GameObject unitGameObject = null; //the Main object it is following, in this case the player
 
-    [SerializeField] private GameObject unitGameObject = null;
-
-    Vector3 mousePosition = new Vector3();
-    Vector3 followPointerPosition = new Vector3();
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private Vector3 mousePosition = new Vector3();
+    private Vector3 followPointerPosition = new Vector3();
 
     // Update is called once per frame
     void Update()

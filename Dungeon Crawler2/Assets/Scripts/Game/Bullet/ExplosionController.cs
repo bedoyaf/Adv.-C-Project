@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// It handles the purely visual object of the smoke after and explosion, so it just waits to destroy itself
+/// </summary>
 public class ExplosionController : MonoBehaviour
 {
     [SerializeField]

@@ -5,12 +5,15 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovementController : MonoBehaviour
 {
+    //configuratable
     [SerializeField]
     private float speed;
 
+    //helpers
     private Rigidbody2D _rigidbody;
     private Animator _animator;
 
+    //input
     private Vector2 movementInput;
     private Vector2 smoothedMovementInput;
     private Vector2 movementInputSmoothVelocity;
@@ -24,7 +27,6 @@ public class PlayerMovementController : MonoBehaviour
     void Update()
     {
         movementInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-
 
         float movementMagnitude = smoothedMovementInput.magnitude;
         _animator.SetBool("running", movementMagnitude > 0.1f); 

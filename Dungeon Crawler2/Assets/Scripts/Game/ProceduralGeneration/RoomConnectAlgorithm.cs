@@ -11,6 +11,8 @@ public static class RoomConnectAlgorithm
     /// <summary>
     /// Randomly selects rooms from the connected part and then finds the closes path to an unconnected room and then repeats
     /// </summary>
+    /// <param name="actualRoomCenters">list of centers of rooms</param>
+    /// <returns>hashset of positions of the tiles from the corridors</returns>
     public static HashSet<Vector2Int> ConnectRooms(List<Vector2Int> actualRoomCenters)
     {
         List<Vector2Int> roomCenters = actualRoomCenters.ToList();
@@ -39,6 +41,9 @@ public static class RoomConnectAlgorithm
     /// <summary>
     /// Just adds the path between those points by randomly chosing an axis and then following it and then switching, creating straight lines
     /// </summary>
+    /// <param name="point1">One center of a room</param>
+    /// <param name="point2">One center of a room</param>
+    /// <returns>hashset of positions of the tiles from the corridor</returns>
     private static HashSet<Vector2Int> CreateCorridorBetweenPoints(Vector2Int point1, Vector2Int point2)
     {
         HashSet<Vector2Int> corridor = new HashSet<Vector2Int>();
@@ -72,7 +77,7 @@ public static class RoomConnectAlgorithm
                 corridor.Add(new Vector2Int(point1.x, y));
                 corridor.Add(new Vector2Int(point1.x+1, y));
             }
-                corridor.UnionWith(GetBiggerCorner(new Vector2Int(point1.x, point2.y)));
+            corridor.UnionWith(GetBiggerCorner(new Vector2Int(point1.x, point2.y)));
             direction = 1;
             if (point1.x > point2.x) direction = -1;
 
@@ -85,14 +90,17 @@ public static class RoomConnectAlgorithm
         }
         return corridor;
     }
+    /// <summary>
+    /// Fills up the area in the corner of a corridor, when it changes axis, just adds all the neighbouring areas to itself
+    /// </summary>
     private static HashSet<Vector2Int> GetBiggerCorner(Vector2Int position)
     {
         HashSet<Vector2Int> corner = new HashSet<Vector2Int>();
-        foreach (var dir in RandomDirectionGenerator.diagonalDirections)
+        foreach (var dir in DirectionManager.diagonalDirections)
         {
             corner.Add(new Vector2Int(position.x + dir.x, position.y + dir.y));
         }
-        foreach (var dir in RandomDirectionGenerator.directions)
+        foreach (var dir in DirectionManager.directions)
         {
             corner.Add(new Vector2Int(position.x + dir.x, position.y + dir.y));
         }
@@ -101,6 +109,9 @@ public static class RoomConnectAlgorithm
     /// <summary>
     /// Finds closest room to the selected one from the unconnected
     /// </summary>
+    /// <param name="points">all of the rooms centers</param>
+    /// <param name="point">current point which closes we are searching for</param>
+    /// <returns>coordinates of the closest room center to the point</returns>
     private static Vector2Int FindClosestPoint(List<Vector2Int> points, Vector2Int point)
     {
         Vector2Int best = points[0];

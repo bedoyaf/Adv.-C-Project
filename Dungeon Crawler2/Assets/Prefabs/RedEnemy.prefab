@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  EnemyVision: 20
+  EnemyVision: 15
   movementSpeed: 10
   shootingRange: 5
   shootingCooldown: 2
@@ -295,6 +295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  damageModifier: 1
   onTakeDamage:
     m_PersistentCalls:
       m_Calls: []

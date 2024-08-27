@@ -6,11 +6,11 @@ using UnityEngine.Events;
 
 public class HealthController : MonoBehaviour, IDamageable
 {
-    [SerializeField]
-    public int maxHealth = 100;
-    [SerializeField] private float damageModifier = 1f;
+    //configurable
+    [SerializeField] public int maxHealth = 100;
+    [SerializeField] private float damageModifier = 1f; //so I can adjust how much damage that player/enemy takes
     public int currentHealth { get; private set; }
-
+    //events
     [SerializeField] public UnityEvent<int> onTakeDamage;
     [SerializeField] public UnityEvent<GameObject> onDeathEvent;
 
@@ -19,6 +19,9 @@ public class HealthController : MonoBehaviour, IDamageable
         currentHealth = maxHealth;
     }
 
+    /// <summary>
+    /// just subtracts from currentHealth with rescpets to damageModifier, and if needed makes the object die dead
+    /// </summary>
     public void TakeDamage(int damage)
     {
         damage =(int)(damage * damageModifier);
@@ -33,6 +36,9 @@ public class HealthController : MonoBehaviour, IDamageable
         }
     }
 
+    /// <summary>
+    /// Increments the currentHealth, not exceeding maxHealth
+    /// </summary>
     public void Heal(int amount)
     {
         currentHealth += amount;
@@ -42,10 +48,12 @@ public class HealthController : MonoBehaviour, IDamageable
         }
     }
 
+    /// <summary>
+    /// invokes the Die event
+    /// </summary>
     public void Die()
     {
         Debug.Log($"{gameObject.name} died!");
-       // Destroy(gameObject);
         onDeathEvent?.Invoke(gameObject);
     }
 }

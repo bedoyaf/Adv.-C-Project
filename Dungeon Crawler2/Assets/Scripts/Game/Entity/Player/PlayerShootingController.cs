@@ -5,30 +5,31 @@ using UnityEngine;
 
 public class PlayerShootingController : MonoBehaviour
 {
-    private SpriteRenderer spriteRenderer;
-
+    //attack
+    private ColorEnemy currentInfection = ColorEnemy.Purple; //determins weapons
     [SerializeField] private GameObject bulletPrefab;    
     [SerializeField] private GameObject bombPrefab;       
-    private Rigidbody2D rb;
     [SerializeField] BulletData longRangeBullet;
     [SerializeField] BulletData shortRangeBullet;
     private BulletData currentBulletData;
-    private ColorEnemy currentInfection  = ColorEnemy.Purple;
-    [SerializeField] private GameObject flamePrefab;          
+    [SerializeField] private float delayBetweenShots = 1f; 
+    private float lastShotTime;
+    //flame
+    [SerializeField] private GameObject flamePrefab;
     [SerializeField] private Transform flamePoint;
     private float flameRate = 0.1f;
     private bool isFiring = false;
     private GameObject currentFlameInstance;
     private float flameDistanceFromPlayer = 2f;
-    [SerializeField] private float flamerCooldown =1f;
+    [SerializeField] private float flamerCooldown = 1f;
     private float lastFlame = 0f;
-
-    [SerializeField] private float delayBetweenShots = 1f; 
-    private float lastShotTime;
+    //helpers
+    private SpriteRenderer spriteRenderer;
+    private Rigidbody2D rigidBody;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rigidBody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -51,10 +52,11 @@ public class PlayerShootingController : MonoBehaviour
             StopFlameThrower();
         }
             UpdateFlamePointDirection();
-        
-
     }
 
+    /// <summary>
+    /// flips the sprite in relation to the mouse position
+    /// </summary>
     private void FlipSpriteIfNecessary()
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -68,7 +70,9 @@ public class PlayerShootingController : MonoBehaviour
             spriteRenderer.flipX = false;
         }
     }
-
+    /// <summary>
+    /// Stops the attack of the flamethrower by destroying the object
+    /// </summary>
     private void StopFlameThrower()
     {
         if (isFiring)
@@ -77,6 +81,9 @@ public class PlayerShootingController : MonoBehaviour
             Destroy(currentFlameInstance);  // Destroy the current flame instance when the player releases the button
         }
     }
+    /// <summary>
+    /// spawns a flame object that damages the enemy with respect to time
+    /// </summary>
     private void StartFlameThrower()
     {
         if (Time.time >= lastFlame + flamerCooldown)
@@ -89,6 +96,9 @@ public class PlayerShootingController : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// switches current infection and changes the type of attack if its one of the bullet type attacks
+    /// </summary>
     public void SetInfection(ColorEnemy newInfection)
     {
         currentInfection = newInfection;
@@ -103,6 +113,9 @@ public class PlayerShootingController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// spawns an attack corresponding to the current infection
+    /// </summary>
     public void Attack()
     {
         if (Time.time - lastShotTime > delayBetweenShots)
@@ -121,12 +134,15 @@ public class PlayerShootingController : MonoBehaviour
             }
             else
             {
-                Debug.Log("No infection");
+                Debug.Log("no infection");
             }
             lastShotTime = Time.time;
         }
     }
 
+    /// <summary>
+    /// spawns and cinfigurates the bullet object in a way so it flys in the direction of the mouse
+    /// </summary>
     void Shoot()
     {
         Vector3 mousePosition = Input.mousePosition;
@@ -134,22 +150,28 @@ public class PlayerShootingController : MonoBehaviour
 
         Vector2 shootDirection = (mousePosition - transform.position).normalized;
 
-        float bulletSpeed = rb.velocity.magnitude;//*dotProduct;
+        float bulletSpeed = rigidBody.velocity.magnitude;//*dotProduct;
                                                   // Debug.Log(bulletSpeed);
         GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
         Vector3 currentPosition = transform.position;
 
-        bullet.GetComponent<BulletController>().SetDirection(shootDirection, currentPosition, bulletSpeed);
-        bullet.GetComponent<BulletController>().SetTag(gameObject);
+        bullet.GetComponent<BulletController>().Initialize(gameObject,shootDirection, currentPosition, bulletSpeed);
         bullet.GetComponent<BulletController>().setBulletData(currentBulletData);
 
     }
 
+
+    /// <summary>
+    /// Creates the bomb
+    /// </summary>
     void PlantBomb()
     {
         Instantiate(bombPrefab, transform.position, Quaternion.identity);
     }
 
+    /// <summary>
+    /// Just changes the flames position acording to the mouse position so it rotates around the player
+    /// </summary>
     private void UpdateFlamePointDirection()
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerStatsController : MonoBehaviour
 {
-    private PlayerShootingController shootingController;
+    //animation
     [SerializeField] private List<RuntimeAnimatorController> animationControllers; //default,green,red, violet
     private Animator animator;
     public ColorEnemy currentInfection = ColorEnemy.None;
@@ -14,6 +14,9 @@ public class PlayerStatsController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI transformationTimeText;
     [SerializeField] private float transformationTimeSeconds = 10f;
     private HealthController healthController;
+    //helpers
+    private PlayerShootingController shootingController;
+
     void Start()
     {
         var playerHealthController = GetComponent<HealthController>();
@@ -23,11 +26,15 @@ public class PlayerStatsController : MonoBehaviour
         healthController = GetComponent<HealthController>();
         UpdatePlayerInfection();
     }
+
     void Update()
     {
         CheckIfCanSwitchForm();
     }
 
+    /// <summary>
+    /// Checks if the player has enaugh points then switches the infection and updates the shooter, also heals player
+    /// </summary>
     private void CheckIfCanSwitchForm()
     {
         ColorEnemy originalInfection = currentInfection;
@@ -54,6 +61,9 @@ public class PlayerStatsController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This coroutine ensures that after a certain amount of time the player referts back 
+    /// </summary>
     private IEnumerator TransformationTime(float duration)
     {
         float timeRemaining = duration;
@@ -69,6 +79,9 @@ public class PlayerStatsController : MonoBehaviour
         UpdatePlayerInfection();
     }
 
+    /// <summary>
+    /// just updates the shootingCOntroller and changes animation to match the infection
+    /// </summary>
     private void UpdatePlayerInfection()
     {
         shootingController.SetInfection(currentInfection);
@@ -91,6 +104,9 @@ public class PlayerStatsController : MonoBehaviour
         animator.runtimeAnimatorController = animationControllers[index];
     }
 
+    /// <summary>
+    /// On death deactivates the object, its easier than destroying it
+    /// </summary>
     public virtual void PlayerDeath(GameObject dead)
     {
         gameObject.SetActive(false);

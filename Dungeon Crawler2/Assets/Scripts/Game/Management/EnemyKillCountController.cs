@@ -5,17 +5,19 @@ using UnityEngine;
 
 public class EnemyKillCountController : MonoBehaviour
 {
+    //enemyTypes
     [SerializeField] GameObject enemyTypeRed;
     [SerializeField] GameObject enemyTypePurple;
     [SerializeField] GameObject enemyTypeGreen;
-
+    //Points text
     [SerializeField] TextMeshProUGUI textRedPoints;
     [SerializeField] TextMeshProUGUI textPurplePoints;
     [SerializeField] TextMeshProUGUI textGreenPoints;
-
+    //Points
     [SerializeField] public int RedPoints { get; private set; } = 0;
     [SerializeField] public int PurplePoints { get; private set; } = 0;
     [SerializeField] public int GreenPoints { get; private set; } = 0;
+
     void Start()
     {
         enemyTypeRed.GetComponent<HealthController>().onDeathEvent.AddListener(OnEnemyDeath);
@@ -23,15 +25,21 @@ public class EnemyKillCountController : MonoBehaviour
         enemyTypePurple.GetComponent<HealthController>().onDeathEvent.AddListener(OnEnemyDeath);
     }
 
-    // Update is called once per frame
-    void Update()
+    /// <summary>
+    /// Loads the saved points
+    /// </summary>
+    public void LoadPoints(SaveData saveData)
     {
-
+        RedPoints = saveData.RedPoints;
+        GreenPoints = saveData.GreenPoints;
+        PurplePoints = saveData.PurplePoints;
+        UpdateTextPoints();
     }
-
+    /// <summary>
+    /// Increments the points if an enemy died
+    /// </summary>
     public void OnEnemyDeath(GameObject enemy)
     {
-        Debug.Log("zavolal se event");
         ColorEnemy enemyType = enemy.GetComponent<BasicEnemy>().colorOfEnemy;
         switch (enemyType)
         {
@@ -47,7 +55,9 @@ public class EnemyKillCountController : MonoBehaviour
         }
         UpdateTextPoints();
     }
-
+    /// <summary>
+    /// Just resets the points
+    /// </summary>
     public void ResetPoints()
     {
         RedPoints= 0;
@@ -56,6 +66,9 @@ public class EnemyKillCountController : MonoBehaviour
         UpdateTextPoints();
     }
 
+    /// <summary>
+    /// Texts care of the UI text being up to date
+    /// </summary>
     private void UpdateTextPoints()
     {
         textRedPoints.text = "R: " + RedPoints;

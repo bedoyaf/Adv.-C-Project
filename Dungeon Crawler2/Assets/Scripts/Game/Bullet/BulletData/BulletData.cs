@@ -9,4 +9,5 @@ public class BulletData : ScriptableObject
     [SerializeField] public float despawnDistance = 20f;
     [SerializeField] public Sprite sprite;
     [SerializeField] public int rotationAngle = 0;
+    [SerializeField] public AudioClip audioClip;
 }

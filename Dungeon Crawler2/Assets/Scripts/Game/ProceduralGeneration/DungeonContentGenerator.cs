@@ -1,36 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-//using Unity.AI.Navigation;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 using static UnityEngine.CompositeCollider2D;
 using Pathfinding;
 using UnityEngine.Tilemaps;
+
 /// <summary>
 /// Generator of the contents of the dungeon that are not tiles, like spawners of enemies
 /// </summary>
 public class DungeonContentGenerator : MonoBehaviour
 {
-
-    [SerializeField]
-    private GameObject spawner;
-
-    [SerializeField] private GameObject parentSpawner;
-
-    [SerializeField]
-    private GameObject start, end;
-    [SerializeField]
-    private GameObject Player;
+    //prefabs
+    [SerializeField] private GameObject spawner;
+    [SerializeField] private GameObject Player;
     [SerializeField] private GameObject redEnemy, purpleEnemy, greenEnemy;
+    [SerializeField] private GameObject start, end; //of levels
 
-    [SerializeField]
-    private AstarPath pathfinding;
-    [SerializeField]
-    private GameObject EnemySpawnPointsParent, EnemyParent;
-    [SerializeField] private GameObject statsCounter;
+    [SerializeField] private GameObject parentSpawner; //for hierarchy
+    [SerializeField] private GameObject EnemySpawnPointsParent, EnemyParent; //for hierarchy
 
+    [SerializeField] private AstarPath pathfinding;
+    [SerializeField] private GameObject statsCounter; //just here to send the incrementation function to the enemy death event
+
+    /// <summary>
+    /// Just destroys all spawners
+    /// </summary>
     public void DestroySpawners()
     {
         foreach (Transform child in parentSpawner.transform)
@@ -39,6 +36,9 @@ public class DungeonContentGenerator : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Just destroys all enemis with theyr spawnpoints
+    /// </summary>
     public void DestroyEnemies()
     {
         foreach (Transform child in EnemyParent.transform)
@@ -54,7 +54,10 @@ public class DungeonContentGenerator : MonoBehaviour
         }
     }
 
-    public void BakeNavMesh(Bounds bounds)
+    /// <summary>
+    /// Scans the map to make a pathfinding area, it waits a bit so it is sure the map is generated
+    /// </summary>
+    public void ScanAreaForPathFinding()
     {
         StartCoroutine(ScanAfterDelay(0.01f));
     }
@@ -117,6 +120,9 @@ public class DungeonContentGenerator : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// Figures out the color from the enum for the spawners
+    /// </summary>
     private UnityEngine.Color GetColorFromEnum(ColorEnemy colorEnemy)
     {
         switch (colorEnemy)

@@ -4,34 +4,22 @@ using UnityEngine;
 
 public class BombController : MonoBehaviour
 {
-    private Rigidbody2D rb;
-    private Vector3 originalPosition;
-    private SpriteRenderer spriteRenderer;
-//    public float ExplosionFadeTime = 2;
-//    public Sprite bomb;
-//    [SerializeField] private Sprite Explosion;
     [SerializeField] private float explosionTime = 2f;
     [SerializeField] private float explosionRadius = 3f;
     [SerializeField] private int damage=30;
- //   public LayerMask explosionLayers;
- //   public AudioSource Source;
-   // public AudioClip BoomClip;
-    public GameObject explosionEffect;
-    private bool exploded = false;
+    public GameObject explosionEffect; //just smoke visual object thats left after the explosion
 
     void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-
-        // Start the countdown to explosion
+        // starts the countdown to explosion
         Invoke("Explode", explosionTime);
     }
 
+    /// <summary>
+    /// Spawns the smoke visuals and checks all the colliders in the viscinity then deals damage to them and destroys itself
+    /// </summary>
     void Explode()
     {
-        if (exploded) return;
-
-        exploded = true;
 
         if (explosionEffect != null)
         {

@@ -13,16 +13,6 @@ public class HealthTextController : MonoBehaviour
 
     public void UpdateHealthText(int damage)
     {
-
             textMesh.text = $"Health: {healthController.currentHealth}";
-
-    }
-
-    void OnDestroy()
-    {
-        if (healthController != null)
-        {
-            healthController.onTakeDamage.RemoveListener(UpdateHealthText);
-        }
     }
 }

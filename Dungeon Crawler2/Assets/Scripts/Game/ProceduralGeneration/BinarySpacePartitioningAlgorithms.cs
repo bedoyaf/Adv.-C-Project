@@ -15,6 +15,10 @@ public static class BinarySpacePartitioningAlgorithms
     /// This algorithm splits the room randomly into two parts repeatedly, until the rooms can not be split anymore then we have created a list of quadrilateral rooms
     /// it randomly chooses which axis it should cut, thats why there is a bit of code repetition to avoid any kind of axis bias
     /// </summary>
+    /// <param name="space">Bounds of the whole are where the dungeon will be generated</param>
+    /// <param name="minHeight">Minimal height of a Room</param>
+    /// <param name="minWidth">Minimal Width of a Room</param>
+    /// <returns>resturns a List of BoundsInt, each element represents a room bounds</returns>
     public static List<BoundsInt> BinarySpacePartitioning(BoundsInt space, int minHeight, int minWidth)
     {
         Queue<BoundsInt> roomqueue = new Queue<BoundsInt>();
@@ -65,6 +69,10 @@ public static class BinarySpacePartitioningAlgorithms
     /// <summary>
     /// Splits the one room into two rooms on an axis
     /// </summary>
+    /// <param name="roomqueue">Queue from the binary partitioning algorithm</param>
+    /// <param name="room">the room that is being split</param>
+    /// <param name="minWidth">the minimal Width of a room</param>
+    /// <returns>resturns a nothing but the reference of the queue will have two new rooms</returns>
     private static void SplitRoomHorizontaly(Queue<BoundsInt> roomqueue, BoundsInt room, int minWidth)
     {
         var splitY = UnityEngine.Random.Range(1, room.size.y);
@@ -74,7 +82,10 @@ public static class BinarySpacePartitioningAlgorithms
         roomqueue.Enqueue(room1);
         roomqueue.Enqueue(room2);
     }
-
+    /// <param name="roomqueue">Queue from the binary partitioning algorithm</param>
+    /// <param name="room">the room that is being split</param>
+    /// <param name="minWidth">the minimal Height of a room</param>
+    /// <returns>resturns a nothing but the reference of the queue will have two new rooms</returns>
     private static void SplitRoomVertically(Queue<BoundsInt> roomqueue, BoundsInt room, int minHeight)
     {
         var splitX = UnityEngine.Random.Range(1, room.size.x);

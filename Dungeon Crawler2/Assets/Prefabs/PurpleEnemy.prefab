@@ -74,6 +74,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  damageModifier: 1
   onTakeDamage:
     m_PersistentCalls:
       m_Calls: []
@@ -145,9 +146,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  EnemyVision: 20
-  movementSpeed: 10
-  shootingRange: 17
+  EnemyVision: 15
+  movementSpeed: 5
+  shootingRange: 15
   shootingCooldown: 1
   spawnLocationsParent: {fileID: 0}
   enemyParent: {fileID: 0}

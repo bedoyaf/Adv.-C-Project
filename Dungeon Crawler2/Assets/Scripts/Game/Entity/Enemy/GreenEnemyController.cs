@@ -7,7 +7,7 @@ public class GreenEnemyController : BasicEnemy
     [SerializeField]
     private GameObject bulletPrefab;
     [SerializeField]
-    private BulletData bulletData;
+    private BulletData bulletData; //so its projectile is unique to the others
     void Start()
     {
         ConfigurateBasicFields();
@@ -15,10 +15,16 @@ public class GreenEnemyController : BasicEnemy
         spriteFlipCustomizer = false;
         colorOfEnemy = ColorEnemy.Green;
     }
+    /// <summary>
+    /// could be the same as Shoot, but decided to make it more exact
+    /// </summary>
     public override void Attack()
     {
         Shoot();
     }
+    /// <summary>
+    /// spawns the bulletPrefab and configurates it
+    /// </summary>
     private void Shoot()
     {
         Vector2 shootDirection = (target.position - transform.position).normalized;
@@ -27,7 +33,6 @@ public class GreenEnemyController : BasicEnemy
         currentPosition.z = 0;
         GameObject bullet = Instantiate(bulletPrefab, currentPosition, Quaternion.identity);
         bullet.GetComponent<BulletController>().setBulletData(bulletData);
-        bullet.GetComponent<BulletController>().SetDirection(shootDirection, currentPosition, bulletSpeed);
-        bullet.GetComponent<BulletController>().SetTag(gameObject);
+        bullet.GetComponent<BulletController>().Initialize(gameObject,shootDirection, currentPosition, bulletSpeed);
     }
 }
