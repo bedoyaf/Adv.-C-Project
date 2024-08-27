@@ -23,6 +23,7 @@ public class PlayerShootingController : MonoBehaviour
     private float flameDistanceFromPlayer = 2f;
     [SerializeField] private float flamerCooldown = 1f;
     private float lastFlame = 0f;
+    [SerializeField] float flameDuration = 2;
     //helpers
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rigidBody;
@@ -37,17 +38,16 @@ public class PlayerShootingController : MonoBehaviour
     {
         FlipSpriteIfNecessary();
 
-        if (Input.GetMouseButtonDown(1)) // 0 = left mouse button
+        if (Input.GetMouseButtonDown(0) && currentInfection != ColorEnemy.None) // 0 = left mouse button
         {
             Attack();
         }
-
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && currentInfection == ColorEnemy.None)
         {
             StartFlameThrower();
         }
 
-        if (Input.GetButtonUp("Fire1"))
+        if (Input.GetButtonUp("Fire1") && currentInfection == ColorEnemy.None)
         {
             StopFlameThrower();
         }
@@ -93,8 +93,17 @@ public class PlayerShootingController : MonoBehaviour
                 lastFlame = Time.time;
                 isFiring = true;
                 currentFlameInstance = Instantiate(flamePrefab, flamePoint.position, flamePoint.rotation, flamePoint);
+                StartCoroutine(StopFlameAfterDuration(flameDuration));
             }
         }
+    }
+    /// <summary>
+    /// Just snuffs out the flame after a while
+    /// </summary>
+    private IEnumerator StopFlameAfterDuration(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        StopFlameThrower();
     }
     /// <summary>
     /// switches current infection and changes the type of attack if its one of the bullet type attacks

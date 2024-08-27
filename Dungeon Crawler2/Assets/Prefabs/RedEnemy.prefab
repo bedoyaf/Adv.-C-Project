@@ -128,10 +128,10 @@ MonoBehaviour:
   target: {fileID: 0}
   EnemyVision: 15
   movementSpeed: 10
-  shootingRange: 5
-  shootingCooldown: 2
   spawnLocationsParent: {fileID: 0}
   enemyParent: {fileID: 0}
+  shootingRange: 5
+  shootingCooldown: 2
   bombPrefab: {fileID: 4137400275654543772, guid: db311ae1de4880a4bbee23f4fc44b2c7, type: 3}
   bombPlantingDistance: 2
   safeDistance: 10
@@ -295,7 +295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  damageModifier: 1
+  damageModifier: 2
   onTakeDamage:
     m_PersistentCalls:
       m_Calls: []

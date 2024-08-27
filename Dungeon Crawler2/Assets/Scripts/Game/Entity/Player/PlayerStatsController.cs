@@ -38,20 +38,23 @@ public class PlayerStatsController : MonoBehaviour
     private void CheckIfCanSwitchForm()
     {
         ColorEnemy originalInfection = currentInfection;
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if(currentInfection == ColorEnemy.None)
         {
-            if (pointsCounter.RedPoints >= pointsRequiredToTransform)
-                currentInfection = ColorEnemy.Red;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            if (pointsCounter.GreenPoints >= pointsRequiredToTransform)
-                currentInfection = ColorEnemy.Green;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            if (pointsCounter.PurplePoints >= pointsRequiredToTransform)
-                currentInfection = ColorEnemy.Purple;
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                if (pointsCounter.RedPoints >= pointsRequiredToTransform)
+                    currentInfection = ColorEnemy.Red;
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                if (pointsCounter.GreenPoints >= pointsRequiredToTransform)
+                    currentInfection = ColorEnemy.Green;
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                if (pointsCounter.PurplePoints >= pointsRequiredToTransform)
+                    currentInfection = ColorEnemy.Purple;
+            }
         }
         if(originalInfection != currentInfection)
         {
@@ -102,6 +105,12 @@ public class PlayerStatsController : MonoBehaviour
                 break;
         }
         animator.runtimeAnimatorController = animationControllers[index];
+    }
+
+    public void ResetInfection()
+    {
+        currentInfection = ColorEnemy.None;
+        UpdatePlayerInfection();
     }
 
     /// <summary>

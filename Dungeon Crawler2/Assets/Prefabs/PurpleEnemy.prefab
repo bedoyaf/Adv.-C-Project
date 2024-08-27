@@ -74,7 +74,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  damageModifier: 1
+  damageModifier: 2
   onTakeDamage:
     m_PersistentCalls:
       m_Calls: []
@@ -148,10 +148,10 @@ MonoBehaviour:
   target: {fileID: 0}
   EnemyVision: 15
   movementSpeed: 5
-  shootingRange: 15
-  shootingCooldown: 1
   spawnLocationsParent: {fileID: 0}
   enemyParent: {fileID: 0}
+  shootingRange: 15
+  shootingCooldown: 1
   bulletPrefab: {fileID: 620423418827414382, guid: 7cec1422d946ff24facb96d478247a1c, type: 3}
   bulletData: {fileID: 11400000, guid: fc8ca0d7dbfadfb4487686b9aaabeb7c, type: 2}
 --- !u!58 &-4229435064104362052
