@@ -10620,18 +10620,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 1024800662}
-        m_TargetAssemblyTypeName: HealthTextController, Assembly-CSharp
-        m_MethodName: UpdateHealthText
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
       - m_Target: {fileID: 1780010711}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -10684,6 +10672,30 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: EnemyKillCountController, Assembly-CSharp
         m_MethodName: LoadPoints
         m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1447161182}
+        m_TargetAssemblyTypeName: HealthController, Assembly-CSharp
+        m_MethodName: LoadHealth
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1024800662}
+        m_TargetAssemblyTypeName: HealthTextController, Assembly-CSharp
+        m_MethodName: UpdateHealthText
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -11758,7 +11770,7 @@ MonoBehaviour:
   flamePrefab: {fileID: 4916697542080984034, guid: 0e8e903ea1a2d8b45864464098426ec2, type: 3}
   flamePoint: {fileID: 1912160708}
   flamerCooldown: 1
-  flameDuration: 2
+  flameDuration: 3
 --- !u!114 &1447161182
 MonoBehaviour:
   m_ObjectHideFlags: 0

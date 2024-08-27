@@ -56,4 +56,8 @@ public class HealthController : MonoBehaviour, IDamageable
         Debug.Log($"{gameObject.name} died!");
         onDeathEvent?.Invoke(gameObject);
     }
+    public void LoadHealth(SaveData saveData)
+    {
+        currentHealth = saveData.Health;
+    }
 }
