@@ -6,15 +6,17 @@ using UnityEngine.AI;
 
 public class RedEnemyController : BasicEnemy
 {
+    //weapons
     [SerializeField] GameObject bombPrefab;
+    //configurable for bomb
     [SerializeField] float bombPlantingDistance = 2f;
     [SerializeField] float safeDistance = 10f; // Distance to run away from player and bomb
     [SerializeField] float explosionCooldown = 2.5f; // Cooldown between bomb planting
 
-    private GameObject runAwaySpot;
-    Vector3 lastBombPosition;
-    bool hasPlantedBomb = false;
-    float explosionTimer = 0f;
+    private GameObject runAwaySpot; //runs away after placing the bomb
+    private Vector3 lastBombPosition;    
+    private bool hasPlantedBomb = false;
+    private float explosionTimer = 0f;
 
     void Start()
     {
@@ -30,10 +32,12 @@ public class RedEnemyController : BasicEnemy
         PlantBomb();
     }
 
+    /// <summary>
+    /// Just correctly destroys the enemy
+    /// </summary>
     public override void EnemyDeath(GameObject dead)
     {
         Destroy(spawnLocation);
-
         Destroy(gameObject);
         Destroy(runAwaySpot);
     }
@@ -87,26 +91,34 @@ public class RedEnemyController : BasicEnemy
                 // If bomb is already planted, run away
                 else
                 {
-                    Vector3 directionToPlayer = (transform.position - target.position).normalized;
-                    Vector3 directionToBomb = (transform.position - lastBombPosition).normalized;
-                    Vector3 safeDirection = (directionToPlayer + directionToBomb).normalized;
-                    Vector3 targetPosition = transform.position + safeDirection * safeDistance;
-                    runAwaySpot.transform.position = targetPosition;
-                    destinationSetter.target = runAwaySpot.transform;
-                    FlipSprite(runAwaySpot.transform);
+                    runAwayFromBomb();
                 }
                 float diroflooking = -transform.position.x + target.position.x;
             }
             yield return null;
         }
     }
-
+    private void runAwayFromBomb()
+    {
+        Vector3 directionToPlayer = (transform.position - target.position).normalized;
+        Vector3 directionToBomb = (transform.position - lastBombPosition).normalized;
+        Vector3 safeDirection = (directionToPlayer + directionToBomb).normalized;
+        Vector3 targetPosition = transform.position + safeDirection * safeDistance;
+        runAwaySpot.transform.position = targetPosition;
+        destinationSetter.target = runAwaySpot.transform;
+        FlipSprite(runAwaySpot.transform);
+    }
+    /// <summary>
+    /// instantiates the bomb
+    /// </summary>
     void PlantBomb()
     {
         Vector3 lastBombPosition = GetBombPosition();
         Instantiate(bombPrefab, lastBombPosition, Quaternion.identity);
     }
-
+    /// <summary>
+    /// calculates where the bomb will be placed
+    /// </summary>
     Vector3 GetBombPosition()
     {
         Vector3 directionToPlayer = (target.position - transform.position).normalized;
