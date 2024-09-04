@@ -7,20 +7,44 @@ The game is a Dungeon Crawler in Unity, to start it just run the .exe file.
 Moldus was an idea created during the matfyz summer game jam, the game was quite broken and did not feature procedural generation. I did half of the programming on the game mainly everithing that did not feature enemy AI and pathfinding. I decided to make a new version of the game due to the fact that the idea and assets already exist so I dont have to create new ones because I cant draw. So I would give my thanks here to Jaromir Prochazka for letting me use his sprites and creating 3 new ones.
 ## How to play
 The game is a Dungeon Crawler where you need to search a proceduraly generated level for the level exist, the level is filled with enemies of 3 types you must defeat them using either your starting flamethrower or by switching infections, that can be achieved by killing enaugh enemies of a certain type and then pressing one of the 1 2 3 keys that are asocieted with the enemy type. 
+## Controls
+WASD for movement
+Left Mouse Butten for Attack
+the 1 2 3 buttons on the number row switch players infection if the corresponding infection has enaugh points.
+Esc shows the pause menu
 ## Code
 
-### Objects
+### Unity Objects
 
 #### Player
-
+Has rigid body, spriteRenderer, collider, animator and scripts, PlayerMovementController.cs, PlayerStatsController.cs, PlayerShootingController.cs, HealthController.cs.
+This represents represents the player and moves shoots according to the players input, it has a flamethrower as a basic attack and can switch between weapons by collecting enauigh points and changing infections. The PlayerStatsController.cs updates the shootingController for that. It is all configurable.
+#### FLame
+Just and object representing the attack of the flamethrower that deals damage and adds visual, contains collider sprite renderer and animator.
+#### Explosion
+Purely visual object for the explosion of a bomb, has animator and spriterenderer and an audio source
+#### Pathfinding
+An object that manages scanning the map for the enemy pathfinding, I am using the Astar Pathfinding Project.
+#### Start and End
+just the spot where the player spawns and the point where the level ends and the score increments. Both have a sprite renderer, the End has the EndOfLevelController.cs.
+#### PointsManager
+just contains all the UI and point management scripts, EnemyKillCountController.cs, HealthTextController.cs, InGameMenuController.cs, ScoreTrackerController.cs, SaveLoadController.cs
 #### Enemies
-
+There are 3 types of enemies. Has rigid body, spriteRenderer, collider, animator and scripts. All enemies contain the basic behaviour contained in BasicEnemy.cs and HealthController.cs, then contain the corresponding script to theyr color, by that I mean the other scripts in the Enemy folder. Mainly it adds a type of attack. Also contain the pathfinding from the Astar Pathfinding Project that I used for pathfinding. By scaning the map ones these enemies can find the shortest paths to theyr target.
 #### Spawners
-
+Has Sprite renderer, collider, HealthController.cs and SpawnerController.cs the object spawns enemies around itself and can be destroyd by attacking it.
+#### Bullet 
+Contains a sprite renderer rigidbody collider and a BulletController.cs script that manages it by checking for collisions.
 #### Main Dungeon generator and Content Generator
-
+Main Dungeon generator just contains the RoomGenerator.cs script and it calls it on Awake and other object call it for restart for example. DungeonContentGenerator contains just the DungeonContentGenerator script it could have been in the same object.
 #### Camera Helper
 This object is just designed that the Cinemachine Camera follows it. The CameraController.cs script makes it move in the direction the player is looking. 
+#### Helping Hierarchical Objects like Enemies
+Just makes sure that the Unity hierarchy is always conprehensible and helps with erasure certain objects
+#### MusicManager
+Just player on music on a loop
+#### Background
+just a giant sprite to cover default unity background
 ### Scripts
 
 #### Game

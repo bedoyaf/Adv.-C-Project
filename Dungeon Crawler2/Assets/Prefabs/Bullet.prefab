@@ -132,6 +132,7 @@ MonoBehaviour:
   damage: 10
   despawnDistance: 10
   bulletData: {fileID: 0}
+  playerBiasModifier: 1
 --- !u!58 &8420502050239795236
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -177,7 +178,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 13630373898d129419b153be3ee99f28, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1

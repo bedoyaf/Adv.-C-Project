@@ -43,17 +43,26 @@ public class PlayerStatsController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 if (pointsCounter.RedPoints >= pointsRequiredToTransform)
+                {
+                    pointsCounter.RedPoints = pointsCounter.RedPoints - pointsRequiredToTransform;
                     currentInfection = ColorEnemy.Red;
+                }                    
             }
             else if (Input.GetKeyDown(KeyCode.Alpha2))
             {
                 if (pointsCounter.GreenPoints >= pointsRequiredToTransform)
+                {
+                    pointsCounter.GreenPoints = pointsCounter.GreenPoints - pointsRequiredToTransform;
                     currentInfection = ColorEnemy.Green;
+                }
             }
             else if (Input.GetKeyDown(KeyCode.Alpha3))
             {
                 if (pointsCounter.PurplePoints >= pointsRequiredToTransform)
+                {
+                    pointsCounter.PurplePoints = pointsCounter.PurplePoints - pointsRequiredToTransform;
                     currentInfection = ColorEnemy.Purple;
+                }
             }
         }
         if(originalInfection != currentInfection)

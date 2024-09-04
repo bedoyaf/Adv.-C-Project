@@ -10428,6 +10428,9 @@ MonoBehaviour:
   textRedPoints: {fileID: 2056210179}
   textPurplePoints: {fileID: 53107953}
   textGreenPoints: {fileID: 779308733}
+  RedPoints: 0
+  PurplePoints: 0
+  GreenPoints: 0
 --- !u!114 &1024800662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12412,18 +12415,6 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1447161182}
-        m_TargetAssemblyTypeName: HealthController, Assembly-CSharp
-        m_MethodName: Heal
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 100
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -39251,7 +39242,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 0
+        m_CallState: 2
       - m_Target: {fileID: 478669008}
         m_TargetAssemblyTypeName: ProceduralGenerationRoomGenerator, Assembly-CSharp
         m_MethodName: RunProceduralGeneration

@@ -14,9 +14,9 @@ public class EnemyKillCountController : MonoBehaviour
     [SerializeField] TextMeshProUGUI textPurplePoints;
     [SerializeField] TextMeshProUGUI textGreenPoints;
     //Points
-    [SerializeField] public int RedPoints { get; private set; } = 0;
-    [SerializeField] public int PurplePoints { get; private set; } = 0;
-    [SerializeField] public int GreenPoints { get; private set; } = 0;
+    [SerializeField] public int RedPoints  = 0;
+    [SerializeField] public int PurplePoints  = 0;
+    [SerializeField] public int GreenPoints  = 0;
 
     void Start()
     {
