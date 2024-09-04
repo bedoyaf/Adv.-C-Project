@@ -137,4 +137,4 @@ The procedural generation scripts are separated into many folders. The `Abstract
   Adds a wall tile next to all the floor tiles and even checks for corners.
 
 ##### Structures
-Contains scripts for structures, in this case just the `EndOf
+Contains scripts for structures, in this case just the EndOfLevelController.cs that just checks if something collided with the end of the level and if it is the player it calls the end of level event.
